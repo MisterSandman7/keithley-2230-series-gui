@@ -74,7 +74,11 @@ impl eframe::App for App {
         ctx.request_repaint();
 
         if ctx.input(|i| i.viewport().close_requested()) {
-            ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.instrument
+                .instrument
+                .reset()
+                .unwrap_or_else(|e| error_handler(e));
+            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
 
         egui::CentralPanel::default().show(ctx, |ui| {
